@@ -13,21 +13,33 @@ from sklearn.model_selection import train_test_split
 from signedsageconvolution import SignedSAGEConvolutionBase, SignedSAGEConvolutionDeep, ListModule
 from sgcn import SignedGraphConvolutionalNetwork
 from Modified_MF import Modified_MF
+from evaluate import TopkEvaluate
+from utils import gather_2dim_list
+
+
+class Evaluate(TopkEvaluate) :
+    def dataset2recmap(self , dataset) : 
+        inte = dataset['interaction']
+        return gather_2dim_list(inte , 0)
+
+        
 
 class SGCN_MF(object):
     """
     Object to train and score the SGCN, log the model behaviour and save the output.
     """
-    def __init__(self, args, graph):
+    def __init__(self, args, traingraph , testgraph):
         """
         Constructing the trainer instance and setting up logs.
         :param args: Arguments object.
         :param graph: Edge data structure with positive and negative graph separated.
         """
         self.args = args
-        self.graph = graph 
+        self.traingraph = traingraph 
+        self.testgraph = testgraph 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.setup_logs()
+        self.graph = self.traingraph
 
     def setup_logs(self):
         """
@@ -43,9 +55,10 @@ class SGCN_MF(object):
         """
         Creating train and test split.
         """
-        self.positive_edges, self.test_positive_edges = train_test_split(self.graph["positive_edges"], test_size = self.args.test_size)
-        self.negative_edges, self.test_negative_edges = train_test_split(self.graph["negative_edges"], test_size = self.args.test_size)
+        self.positive_edges = self.traingraph["positive_edges"]
+        self.negative_edges = self.traingraph["negative_edges"]
         self.ecount = len(self.positive_edges + self.negative_edges)
+        self.evaluate = Evaluate(self.args)
 
         
         # use the X to embedding the result XXX
@@ -74,18 +87,8 @@ class SGCN_MF(object):
         Score the model on the test set edges in each epoch.
         :param epoch: Epoch number. 
         """
-        loss, self.train_z = self.model(self.positive_edges, self.negative_edges, self.y)
-        score_positive_edges = torch.from_numpy(np.array(self.test_positive_edges, dtype=np.int64).T).type(torch.long).to(self.device)
-        score_negative_edges = torch.from_numpy(np.array(self.test_negative_edges, dtype=np.int64).T).type(torch.long).to(self.device)
-        test_positive_z = torch.cat((self.train_z[score_positive_edges[0,:],:], self.train_z[score_positive_edges[1,:],:]),1)
-        test_negative_z = torch.cat((self.train_z[score_negative_edges[0,:],:], self.train_z[score_negative_edges[1,:],:]),1)
-        scores = torch.mm(torch.cat((test_positive_z, test_negative_z),0), self.model.regression_weights.to(self.device))
-        probability_scores = torch.exp(F.softmax(scores, dim=1))
-        predictions = probability_scores[:,0]/probability_scores[:,0:2].sum(1)
-        predictions = predictions.cpu().detach().numpy()
-        targets = [0]*len(self.test_positive_edges) + [1]*len(self.test_negative_edges)
-        auc, f1 = calculate_auc(targets, predictions, self.edges)
-        self.logs["performance"].append([epoch+1, auc, f1])
+        pre , racall = self.evaluate.accurate(self.second_model , self.traingraph , self.testgraph , retain=True)
+        self.logs["performance"].append([epoch+1, pre , recall])
 
     def create_and_train_model(self):
         """
@@ -110,8 +113,8 @@ class SGCN_MF(object):
             self.epochs.set_description("SGCN (Loss=%g)" % round(loss.item(),4))
             self.optimizer.step()
             self.logs["training_time"].append([epoch+1,time.time()-start_time])
-            #if self.args.test_size >0:
-                #self.score_model(epoch)
+            if self.args.test_size >0:
+                self.score_model(epoch)
 
     def save_model(self):
         """

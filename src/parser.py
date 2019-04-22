@@ -19,6 +19,11 @@ def parameter_parser():
                         nargs = "?",
                         default = "40",
 	                help = "the latent dim of X , node features dim")
+    parser.add_argument("--topk",
+                        type = int,
+                        nargs = "?",
+                        default = "30",
+	                help = "topk to recommendation")
 
     parser.add_argument("--embedding-path",
                         nargs = "?",
@@ -73,7 +78,7 @@ def parameter_parser():
     parser.add_argument("--ydivx",
                         type = float,
                         default = 1,
-	                help = "the float of y div x , in float")
+	                help = "the Z and the Y dimision ratio")
 
     parser.add_argument("--weight-decay",
                         type = float,

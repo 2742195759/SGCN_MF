@@ -25,9 +25,7 @@ class Modified_MF(torch.nn.Module):
         return loss
         
         
-    #def evaluate(self , Z , interaction) : 
-        #if not isinstance(interaction , np.array) or interaction.ndim != 2 :
-            #raise RuntimeError("the input interaction should be array with dim 2")
-#
-        #self.latent = torch.cat([Z , self.Y] ,dim = 1) ; 
-        
+    def get_topk(self) : 
+        score = torch.matmul(self.latent , self.latent.t())
+        _ , indices = torch.sort(score , -1 , descending=False)
+        return indices

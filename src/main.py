@@ -1,6 +1,6 @@
 from sgcn_mf import SGCN_MF
 from parser import parameter_parser
-from utils import tab_printer, read_graph, score_printer, save_logs
+from utils import tab_printer, read_dataset_split_bytime, score_printer, save_logs , build_graph
 
 def main():
     """
@@ -9,9 +9,11 @@ def main():
     """
     args = parameter_parser()
     tab_printer(args)
-    graph = read_graph(args)
+    trainset , testset = read_dataset_split_bytime(args)
+    traingraph = build_graph(args , trainset)
+    testgraph = build_graph(args , testset)
 
-    trainer = SGCN_MF(args, graph)
+    trainer = SGCN_MF(args, traingraph , testgraph)
     trainer.setup_dataset()
     trainer.create_and_train_model()
     if args.test_size > 0:

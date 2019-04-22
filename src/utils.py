@@ -18,6 +18,14 @@ def unique_2dim_list(li , idxs) :
             res.append(i)
     return res 
 
+def gather_2dim_list(li , idx) : 
+    res = {}
+    for i in li : 
+        key = i[idx]
+        if key not in res : res[key] = []
+        res[key].append(i)
+    return res
+
 def build_edge_from_hypergraph(args , hyper_edge , graph) : 
     nu = graph['nu']
     ni = graph['ni'] 
@@ -35,14 +43,34 @@ def build_edge_from_hypergraph(args , hyper_edge , graph) :
             neg.append([nu+edge[1] , nu+ni+edge[2]])
     return pos , neg
 
-def read_graph(args):
+'''
+auc , mrr , preci , recall , f1 , ndcg , hitratio
+f1
+'''
+def split_by_user_time (args , dataset , userid , timeidx) : 
+    tmp = gather_2dim_list(dataset , userid)
+    train = []
+    test = []
+    test_train_ratio = args.test_size
+    for li in tmp.values() : 
+        sor = sorted(li , key=lambda x : x[timeidx])
+        numtest = int(len(sor)*test_train_ratio)
+        numtest = numtest if numtest != 0 else 1
+        train.extend(sor[0:numtest])
+        test.extend(sor[numtest:])
+    return train , test
+
+def read_dataset_split_bytime(args):
+    dataset = pd.read_csv(args.data_path , sep='\t' , header=None).values.tolist()
+    train , test = split_by_user_time(args , dataset , 0 ,  4)
+    return train , test
+
+def build_graph(args ,dataset) : 
     """
     Method to read graph and create a target matrix with pooled adjacency matrix powers up to the order.
     :param args: Arguments object.
     :return edges: Edges dictionary.
     """
-    dataset = pd.read_csv(args.data_path , sep='\t' , header=None).values.tolist()
-
     enc_user = preprocessing.LabelEncoder()
     enc_item = preprocessing.LabelEncoder()
     enc_feature = preprocessing.LabelEncoder()
