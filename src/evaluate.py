@@ -74,10 +74,9 @@ class TopkEvaluate(object):
             s_predict = recset[t_u]
             s_testset = set(t_list)
             assert(isinstance(s_predict , set))
-            if len(s_predict) : 
-                prec += len (s_predict.intersection(s_testset)) * 1.0 
-            recall += len (s_predict.intersection(s_testset)) * 1.0
+            prec += len (s_predict.intersection(s_testset)) * 1.0 
             len_pre += len(s_predict)
+            recall += len (s_predict.intersection(s_testset)) * 1.0
             len_call += len(s_testset)
         prec /= len_pre
         recall /= len_call

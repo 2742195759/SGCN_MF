@@ -64,8 +64,9 @@ def split_by_user_time (args , dataset , userid , timeidx) :
         sor = sorted(li , key=lambda x : x[timeidx])
         numtest = int(len(sor)*test_train_ratio)
         numtest = numtest if numtest != 0 else 1
-        train.extend(sor[0:numtest])
-        test.extend(sor[numtest:])
+        numtrain = len(sor) - numtrain
+        train.extend(sor[0:numtrain])
+        test.extend(sor[numtrain:])
     return train , test
 
 def read_dataset_split_bytime(args):
