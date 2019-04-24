@@ -26,10 +26,18 @@ def gather_2dim_list(li , idx) :
         res[key].append(i)
     return res
 
-def build_edge_from_hypergraph(args , hyper_edge , graph) : 
-    nu = graph['nu']
-    ni = graph['ni'] 
-    nf = graph['nf'] 
+def idconvert(args , idx) : 
+    nu = args.encoder['nu']
+    ni = args.encoder['ni'] 
+    nf = args.encoder['nf'] 
+    if idx < nu : return idx
+    if idx < ni : return idx-nu
+    if idx < nf : return idx-nu-ni
+    
+def build_edge_from_hypergraph(args , hyper_edge) : 
+    nu = args.encoder['nu']
+    ni = args.encoder['ni'] 
+    nf = args.encoder['nf'] 
     pos = [] 
     neg = []
     for edge in hyper_edge : 
@@ -62,15 +70,7 @@ def split_by_user_time (args , dataset , userid , timeidx) :
 
 def read_dataset_split_bytime(args):
     dataset = pd.read_csv(args.data_path , sep='\t' , header=None).values.tolist()
-    train , test = split_by_user_time(args , dataset , 0 ,  4)
-    return train , test
-
-def build_graph(args ,dataset) : 
-    """
-    Method to read graph and create a target matrix with pooled adjacency matrix powers up to the order.
-    :param args: Arguments object.
-    :return edges: Edges dictionary.
-    """
+    ## change name to id
     enc_user = preprocessing.LabelEncoder()
     enc_item = preprocessing.LabelEncoder()
     enc_feature = preprocessing.LabelEncoder()
@@ -81,14 +81,31 @@ def build_graph(args ,dataset) :
         for fs in features.split(':') : 
             feature_labels.append(fs.split('|')[0])
     enc_feature.fit(feature_labels)
-    graph = {}
-    graph['nu'] = len(enc_user.classes_)
-    graph['ni'] = len(enc_item.classes_)
-    graph['nf'] = len(enc_feature.classes_)
-    graph['enc_user'] = enc_user
-    graph['enc_item'] = enc_item
-    graph['enc_feature'] = enc_feature
+    encoder = {}
+    encoder['nu'] = len(enc_user.classes_)
+    encoder['ni'] = len(enc_item.classes_)
+    encoder['nf'] = len(enc_feature.classes_)
+    encoder['enc_user'] = enc_user
+    encoder['enc_item'] = enc_item
+    encoder['enc_feature'] = enc_feature
+    train , test = split_by_user_time(args , dataset , 0 ,  4)
+    args.encoder = encoder
+    return train , test
 
+def build_graph(args , dataset) : 
+    """
+    Method to read graph and create a target matrix with pooled adjacency matrix powers up to the order.
+    :param args: Arguments object.
+    :return edges: Edges dictionary.
+    """
+    encoder = args.encoder
+    enc_user = encoder['enc_user'] 
+    enc_item = encoder['enc_item'] 
+    enc_feature = encoder['enc_feature'] 
+    nu = args.encoder['nu']
+    ni = args.encoder['ni'] 
+    nf = args.encoder['nf'] 
+    graph = {}
     hyper_edge = []
     for line in dataset : 
         for features in line[3].split(':') : 
@@ -98,13 +115,16 @@ def build_graph(args ,dataset) :
     hyper_edge = [[enc_user.transform([edge[0]])[0] , enc_item.transform([edge[1]])[0] , enc_feature.transform([edge[2]])[0] , int(edge[3]) , int(edge[4])] for edge in hyper_edge]
     interaction = [[int(edge[0]) , int(edge[1]) , int(edge[4])] for edge in unique_2dim_list(hyper_edge , [0,1])]
         
-    pos , neg = build_edge_from_hypergraph(args , hyper_edge , graph)
+    pos , neg = build_edge_from_hypergraph(args , hyper_edge)
+
+    hyper_edge = [ [edge[0] , edge[1]+nu , edge[2]+nu+ni , edge[3]] for edge in hyper_edge ]  
 
     graph["positive_edges"] = pos
     graph["negative_edges"] = neg
     graph["ecount"] = len(pos) + len(neg)
-    graph["ncount"] = graph['nu']+graph['ni']+graph['nf']
-    graph["interaction"] = interaction
+    graph["ncount"] = encoder['nu']+encoder['ni']+encoder['nf']
+    graph["interaction"] = interaction # userid , itemid , rating  [seperate_id]
+    graph["hyper_edge"] = hyper_edge   # userid , itemid , featureid , +/-1 [gather_id]
 
     return graph 
 

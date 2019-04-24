@@ -2,6 +2,7 @@ import math
 import torch
 import torch.nn.functional as F
 from torch.nn import Parameter
+import torch.nn.init as init
 
 def uniform(size, tensor):
     """
@@ -70,7 +71,6 @@ class SignedSAGEConvolution(torch.nn.Module):
         self.norm = norm
         self.norm_embed = norm_embed
         self.weight = Parameter(torch.Tensor(self.in_channels, out_channels))
-
         if bias:
             self.bias = Parameter(torch.Tensor(out_channels))
         else:
@@ -83,8 +83,8 @@ class SignedSAGEConvolution(torch.nn.Module):
         Initialize parameters.
         """
         size = self.weight.size(0)
-        uniform(size, self.weight)
-        uniform(size, self.bias)
+        init.xavier_normal_(self.weight)
+        init.uniform_(self.bias ,0 , 1)
 
     def __repr__(self):
         """

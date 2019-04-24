@@ -15,12 +15,20 @@ from sgcn import SignedGraphConvolutionalNetwork
 from Modified_MF import Modified_MF
 from evaluate import TopkEvaluate
 from utils import gather_2dim_list
+import os
 
 
 class Evaluate(TopkEvaluate) :
     def dataset2recmap(self , dataset) : 
+        '''
+            dataset is { } contain 'interaction'
+        '''
         inte = dataset['interaction']
-        return gather_2dim_list(inte , 0)
+        gath = gather_2dim_list(inte , 0)
+        for k,v in gath.items() : 
+            v = [item[1] for item in v]
+            gath[k] = v
+        return gath
 
         
 
@@ -61,8 +69,7 @@ class SGCN_MF(object):
         self.evaluate = Evaluate(self.args)
 
         
-        # use the X to embedding the result XXX
-        self.X = torch.rand((self.graph['ncount'] , self.args.dimnode) , requires_grad=True)
+        self.X = torch.rand((self.graph['ncount'] , self.args.dimnode)) # use the X to embedding the result XXX
         # use the X to be a node feature
         neg_adj = np.zeros((self.X.shape[0] , self.X.shape[0]) , dtype='Float32')
         pos_adj = np.zeros((self.X.shape[0] , self.X.shape[0]) , dtype='Float32')
@@ -75,9 +82,6 @@ class SGCN_MF(object):
         self.neg_adj = torch.from_numpy(neg_adj)
         self.pos_adj = torch.from_numpy(pos_adj)
 
-        self.y = np.array([0]*len(self.positive_edges)+[1]*len(self.negative_edges)+[2]*(self.ecount))
-        self.y = torch.from_numpy(self.y).type(torch.LongTensor).to(self.device)
-
         self.positive_edges = torch.from_numpy(np.array(self.positive_edges, dtype=np.int64).T).type(torch.long).to(self.device)
         self.negative_edges = torch.from_numpy(np.array(self.negative_edges, dtype=np.int64).T).type(torch.long).to(self.device)
 
@@ -87,8 +91,12 @@ class SGCN_MF(object):
         Score the model on the test set edges in each epoch.
         :param epoch: Epoch number. 
         """
-        pre , racall = self.evaluate.accurate(self.second_model , self.traingraph , self.testgraph , retain=True)
+        pre , recall = self.evaluate.accurate(self.second_model , self.traingraph , self.testgraph , retain=True)
         self.logs["performance"].append([epoch+1, pre , recall])
+        return pre , recall
+
+    def regular_loss(self ) : #TODO
+        return 0
 
     def create_and_train_model(self):
         """
@@ -98,23 +106,29 @@ class SGCN_MF(object):
         self.sgcn = SignedGraphConvolutionalNetwork(self.device, self.args, self.X).to(self.device)
 
         # XXX MF and BPR
-        self.second_model = Modified_MF(self.args , self.graph['ncount'])
-
-        self.optimizer = torch.optim.Adam(self.sgcn.parameters(), lr=self.args.learning_rate, weight_decay=self.args.weight_decay)
+        args = self.args
+        self.second_model = Modified_MF(self.args , args.encoder['nu'], args.encoder['ni'] , args.encoder['nf'])
+        self.optimizer = torch.optim.Adam([i for i in self.sgcn.parameters()]+[i for i in self.second_model.parameters()], lr=self.args.learning_rate, weight_decay=self.args.weight_decay) # XXX parameters() ?
         self.sgcn.train()
         self.second_model.train()
         self.epochs = trange(self.args.epochs, desc="Loss")
+        hyper_edge = self.graph['hyper_edge']
         for epoch in self.epochs:
             start_time = time.time()
             self.optimizer.zero_grad()
-            loss, _ = self.sgcn(self.positive_edges, self.negative_edges, self.y ,self.pos_adj , self.neg_adj)
-            loss = loss * self.args.super_mu + (1-self.args.super_mu)*self.second_model(self.sgcn.z , np.array(self.graph["interaction"] , dtype='int32'))
+            Z = self.sgcn(self.positive_edges, self.negative_edges , self.pos_adj , self.neg_adj)
+            #import pdb 
+            #pdb.set_trace()
+            loss1 = self.sgcn.calculate_loss_function(Z, torch.LongTensor(hyper_edge)) 
+            loss2 =  (1-self.args.super_mu)*self.second_model(self.sgcn.z , np.array(self.graph["interaction"] , dtype='int32'))
+            loss  = self.regular_loss() + loss1 + loss2
             loss.backward()
-            self.epochs.set_description("SGCN (Loss=%g)" % round(loss.item(),4))
             self.optimizer.step()
             self.logs["training_time"].append([epoch+1,time.time()-start_time])
             if self.args.test_size >0:
-                self.score_model(epoch)
+                print (self.score_model(epoch))
+            self.epochs.set_description("SGCN (Loss=%g)" % round(loss.item(),4))
+
 
     def save_model(self):
         """
@@ -131,3 +145,14 @@ class SGCN_MF(object):
         regression_header = ["x_" + str(x) for x in range(self.regression_weights.shape[1])]
         self.regression_weights = pd.DataFrame(self.regression_weights, columns = regression_header)
         self.regression_weights.to_csv(self.args.regression_weights_path, index = None)     
+
+### for test
+if __name__ == '__main__' : 
+    import operator as op
+    print('start_test')
+    recmap = Evaluate.dataset2recmap(None , {'interaction':[[0,1,5],[0,2,3],[1,0,1]]})
+    assert(op.eq(recmap[0],[1,2]))
+    assert(op.eq(recmap[1],[0]))
+    assert(2 not in recmap)
+    print('successful')
+    os.exit(-1)

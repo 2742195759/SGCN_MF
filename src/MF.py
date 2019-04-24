@@ -3,9 +3,10 @@ from torch.nn import Parameter
 import torch.nn.functional as F
 import torch.nn.init as init
 import numpy as np
+from sgcn_mf import Evaluate
 
-class Modified_MF(torch.nn.Module):
-    def __init__(self , args , nu , ni , nf) :
+class MF(torch.nn.Module):
+    def __init__(self , args , nu , ni) :
         """
         Init Function : 
         :parameter args 
@@ -13,32 +14,30 @@ class Modified_MF(torch.nn.Module):
         :parameter ni , the number of item
         :parameter nf , the number of features
         """
-        super(Modified_MF, self).__init__()
+        super(MF, self).__init__()
         self.args = args
-        self.uY = Parameter(torch.Tensor(nu, self.args.ydivx * self.args.dimEmbedding))
-        self.iY = Parameter(torch.Tensor(ni, self.args.ydivx * self.args.dimEmbedding))
+        self.uY = Parameter(torch.Tensor(nu, self.args.mf_lfmdim))
+        self.iY = Parameter(torch.Tensor(ni, self.args.mf_lfmdim))
         init.uniform_(self.uY , 0 , 1)
         init.uniform_(self.iY , 0 , 1)
         self.nu = nu 
         self.ni = ni
+        self.evaluate = Evaluate(args)
 
-    def forward(self , Z , interaction) : 
+    def forward(self , interaction) : 
         """
         Model Modified_MF , 
-        :param Z , the embedding of the SGCN
         :param interaction , the array of (userid , itemid , rating)  [verified]
         :note all the userid / itemid must start with zero seperate  
         """
         nu = self.nu 
         ni = self.ni
-        import pdb
-        pdb.set_trace()
-        self.latentu = torch.cat([Z[0:nu] , self.uY] ,dim = 1) ; 
-        self.latenti = torch.cat([Z[nu:ni+nu] , self.iY] ,dim = 1) ; 
+        self.latentu = self.uY
+        self.latenti = self.iY
 
         u = interaction[:,0]
         i = interaction[:,1]
-        r = torch.from_numpy(interaction[:,2]).type(torch.float)
+        r = interaction[:,2].type(torch.float)
         r_hat = torch.sum(self.latentu[u,:] * self.latenti[i,:] , dim=1)
         loss = torch.mean((r - r_hat) ** 2) 
         return loss
@@ -47,3 +46,6 @@ class Modified_MF(torch.nn.Module):
         score = torch.matmul(self.latentu , self.latenti.t())
         _ , indices = torch.sort(score , -1 , descending=True)
         return indices
+
+    def score(self , train , test) : 
+        return self.evaluate.accurate(self , train , test , retain=True)

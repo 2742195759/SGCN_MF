@@ -52,12 +52,12 @@ class TopkEvaluate(object):
         else : 
             raise RuntimeError("TopkEvaluate must get a module have get_topk method")
 
-        import pdb
-        pdb.set_trace()
+        #import pdb
+        #pdb.set_trace()
         recset = {}
         for u,l in rec.items() : 
             tmp = set()
-            trainset = set(train[u])
+            trainset = set(train[u]) if u in train else set()
             cnt = 1 
             for i in l : 
                 if cnt > self.topk : break
@@ -68,14 +68,18 @@ class TopkEvaluate(object):
             
         prec = 0.0
         recall = 0.0 
+        len_pre = 0.0
+        len_call = 0.0
         for t_u , t_list in test.items() : 
             s_predict = recset[t_u]
             s_testset = set(t_list)
             assert(isinstance(s_predict , set))
             if len(s_predict) : 
-                prec += (len (s_predict.intersection(s_testset) ) * 1.0 / len(s_predict))
-            recall += (len (s_predict.intersection(s_testset) ) * 1.0 / len(s_testset))
-        prec /= len(test)
-        recall /= len(test)
+                prec += len (s_predict.intersection(s_testset)) * 1.0 
+            recall += len (s_predict.intersection(s_testset)) * 1.0
+            len_pre += len(s_predict)
+            len_call += len(s_testset)
+        prec /= len_pre
+        recall /= len_call
 
         return prec , recall

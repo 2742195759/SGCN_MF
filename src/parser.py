@@ -19,6 +19,7 @@ def parameter_parser():
                         nargs = "?",
                         default = "40",
 	                help = "the latent dim of X , node features dim")
+
     parser.add_argument("--topk",
                         type = int,
                         nargs = "?",
@@ -72,7 +73,7 @@ def parameter_parser():
 
     parser.add_argument("--learning-rate",
                         type = float,
-                        default = 0.01,
+                        default = 0.1,
 	                help = "Learning rate. Default is 0.01.")
 
     parser.add_argument("--ydivx",
@@ -85,15 +86,25 @@ def parameter_parser():
                         default = 10**-5,
 	                help = "Learning rate. Default is 10^-5.")
 
-    parser.add_argument("--super_mu",
+    parser.add_argument("--super-mu",
                         type = float,
-                        default = 1,
+                        default = 0.5,
 	                help = "the merge super parameter of sgcn.loss + second.loss")
+
+    parser.add_argument("--model",
+                        type = str,
+                        default = "sgcn_mf",
+	                help = "choose the basic model : sgcn_mf , mf")
 
     parser.add_argument("--layers",
                         nargs="+",
                         type=int,
                         help = "Layer dimensions separated by space. E.g. 32 32.")
+
+    parser.add_argument("--deep-neurons",
+                        nargs="+",
+                        type=int,
+                        help = "deep layers of the classification E.g. 32 32.")
 
     parser.add_argument("--spectral-features",
                         dest = "spectral_features",
@@ -103,8 +114,18 @@ def parameter_parser():
                         dest = "spectral_features",
                         action = "store_false")
 
-    parser.set_defaults(spectral_features = True)
+    parser.add_argument("--mf_lfmdim",
+                        type = int,
+                        nargs = "?",
+                        default = "50",
+	                help = "the latent dim of MF model")
 
+    parser.add_argument("--mf_learnrate",
+                        type = float,
+                        nargs = "?",
+                        default = "0.005",
+	                help = "learning rate of the ml model")
     parser.set_defaults(layers = [32, 32])
+    parser.set_defaults(deep_neurons = [10, 1])
     
     return parser.parse_args()
