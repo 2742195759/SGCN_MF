@@ -82,8 +82,9 @@ class TopkEvaluate(object):
             len_call += len(s_testset)
         prec /= len_pre
         recall /= len_call
+        f1 = 2 * (prec * recall) / (prec + recall)
 
-        return prec , recall
+        return prec , recall , f1
 
 class Evaluate(TopkEvaluate) :
     def dataset2recmap(self , dataset) : 

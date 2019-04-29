@@ -22,6 +22,7 @@ class Trainer (object) :
     def __init__ (self, args , trainset , testset) : 
         #torch.manual_seed(self.args.seed)
         self.init(args , trainset , testset)
+        assert('log' in self.args)
 
 
 ########################################Train Method
@@ -40,7 +41,8 @@ class Trainer (object) :
                 tot_loss += loss.item()
             epochs.set_description("SGCN (Loss=%g)" % round(tot_loss,4))
             if self.args.test_size >0 :
-                print (self.score(self.rawtrainset , self.rawtestset))
+                tuples = self.score(self.rawtrainset , self.rawtestset)
+                self.args.log.LOG (tuples[0] , tuples[1] , tuples[2])
 
     def epoch(self , cntepoch , trainset=None) : 
         '''

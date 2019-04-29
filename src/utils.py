@@ -5,6 +5,66 @@ import networkx as nx
 from sklearn.metrics import roc_auc_score, f1_score
 from sklearn.decomposition import TruncatedSVD
 from sklearn import preprocessing
+import time
+
+
+class XKLOG(object) : 
+    def __init__(self , prefix , descri=None , parameters=None) : 
+        assert(isinstance(prefix , str))
+        self.setdescri(descri)
+        self.prefix = prefix
+        self.setpara(parameters)
+        self.output = []
+
+    def setpara(self , parameters) : 
+        self.parameters = parameters
+        self.parameters = self.para2str()
+
+    def setdescri(self,descri) : 
+        if (isinstance(descri , str)) : 
+            self.descri = descri
+        else : 
+            print ('[WARN] descri not set')
+
+    def para2str(self) : 
+        data = ''
+        if self.parameters != None : 
+            args = vars(self.parameters)
+            keys = sorted(args.keys())
+            for key in keys : 
+                data += str(key) + '\t' + str(args[key]) + '\n'
+        return data
+    
+    def LOG(self , *message) : 
+        if message == None or len(message) == 0 : return
+        print (*message)
+        self.output.append(message)
+
+    def get_filename(self) : 
+        return self.prefix + self.descri + time.strftime('%Y-%m-%d_%H:%M:%S' , time.localtime(time.time())) 
+
+    def write(self ) : 
+        with open(self.get_filename() , 'w') as fp : 
+            fp.write(self.parameters)
+            fp.write("####################\n")
+            for out in self.output : 
+                line = ''
+                if isinstance(out , tuple) : 
+                    for item in out : 
+                        line += str(item) + ' '
+                else : 
+                    line += str(out)
+                fp.write(line+'\n')
+        self.output = []
+        
+    def testcase() : 
+        log = XKLOG('./' , 'test' , None)
+        log.LOG(1,2,3,4)
+        log.LOG('xiongkun')
+        log.LOG([1,2,3,4])
+        print (log.get_filename())
+        log.write()
+
 
 class Hasher(object) : 
     def __init__(self , li=None) : 
@@ -216,3 +276,7 @@ def movie_len2formated_data(inpath , outpath) :
         out.write(sl[0]+'\t'+sl[1]+'\t'+sl[2]+'\t'+'look|good|+1\t'+sl[3])
     f.close()
     out.close()
+
+
+if __name__ == '__main__' : 
+    XKLOG.testcase()

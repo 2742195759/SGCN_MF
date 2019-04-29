@@ -1,0 +1,15 @@
+first edit the skeleton file to make the skeleton for the run command
+second edit the task file to make task for the argsment 
+    every line is a task , PARA_NAME TASK1 TASK2 TASK3 ...
+
+
+$./launcher.sh tune/skeleton tune/task
+
+
+
+IMPROVE : 
+    1. how to choose the greatest parameter and go futher automatically , 
+        because when we get a task done , we have to wait for myself to 
+        change the default parameter and then go on . 
+
+    2. how to record the have-done job and catch exception

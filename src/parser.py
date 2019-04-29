@@ -9,6 +9,11 @@ def parameter_parser():
 
     parser = argparse.ArgumentParser(description = "Run SGCN.")
 
+    parser.add_argument("--description",
+                        nargs = "?",
+                        default = "normal",
+	                help = "the description of this runing , normal for normal test , for parameter tuning")
+
     parser.add_argument("--data-path",
                         nargs = "?",
                         default = "./formated_data/Amazon_Instant_Video.formated",
@@ -43,7 +48,7 @@ def parameter_parser():
 
     parser.add_argument("--epochs",
                         type = int,
-                        default = 8000,
+                        default = 100,
 	                help = "Number of training epochs. Default is 100.")
 
     parser.add_argument("--reduction-iterations",

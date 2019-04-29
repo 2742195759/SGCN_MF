@@ -126,37 +126,6 @@ class SGCN_MF(Trainer):
         print (self.mod_mf.iY[0])
         return self.evaluater.accurate(self.mod_mf , self.rawtrainset , self.rawtestset , retain=True)
 
-    def create_and_train_model(self):
-        """
-        Model training and scoring.
-        """
-        print("\nTraining started.\n")
-        self.sgcn = SignedGraphConvolutionalNetwork(self.device, self.args, self.X).to(self.device)
-
-        # XXX MF and BPR
-        args = self.args
-        self.second_model = Modified_MF(self.args , args.encoder['nu'], args.encoder['ni'] , args.encoder['nf'])
-        self.optimizer = torch.optim.Adam([i for i in self.sgcn.parameters()]+[i for i in self.second_model.parameters()], lr=self.args.learning_rate, weight_decay=self.args.weight_decay) # XXX parameters() ?
-        self.sgcn.train()
-        self.second_model.train()
-        self.epochs = trange(self.args.epochs, desc="Loss")
-        hyper_edge = self.graph['hyper_edge']
-        for epoch in self.epochs:
-            start_time = time.time()
-            self.optimizer.zero_grad()
-            Z = self.sgcn(self.positive_edges, self.negative_edges , self.pos_adj , self.neg_adj)
-            #import pdb 
-            #pdb.set_trace()
-            loss1 = self.sgcn.calculate_loss_function(Z, torch.LongTensor(hyper_edge)) 
-            loss2 =  (1-self.args.super_mu)*self.second_model(self.sgcn.z , np.array(self.graph["interaction"] , dtype='int32'))
-            loss = self.regular_loss() + loss1 + loss2
-            loss.backward()
-            self.optimizer.step()
-            self.logs["training_time"].append([epoch+1,time.time()-start_time])
-            if self.args.test_size > 0 and epoch % 20 == 0:
-                print (self.score_model(epoch))
-            self.epochs.set_description("SGCN (Loss=%g)" % round(loss.item(),4))
-
     def save_model(self):
         """
         Saving the embedding and model weights.

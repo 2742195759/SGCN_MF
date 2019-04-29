@@ -66,8 +66,8 @@ class Modified_MF(torch.nn.Module):
         """
         super(Modified_MF, self).__init__()
         self.args = args
-        self.uY = Parameter(torch.Tensor(nu, self.args.ydivx * self.args.dimEmbedding))
-        self.iY = Parameter(torch.Tensor(ni, self.args.ydivx * self.args.dimEmbedding))
+        self.uY = Parameter(torch.Tensor(nu, int(self.args.ydivx * self.args.dimEmbedding)))
+        self.iY = Parameter(torch.Tensor(ni, int(self.args.ydivx * self.args.dimEmbedding)))
         self.neg2posratio = 1
         init.uniform_(self.uY , 0 , 1.0)
         init.uniform_(self.iY , 0 , 1.0)
