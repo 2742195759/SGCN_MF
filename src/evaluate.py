@@ -2,12 +2,13 @@ import torch
 from torch.nn import Parameter
 import torch.nn.functional as F
 import numpy as np
+from utils import gather_2dim_list
 
 class TopkEvaluate(object):
     """TopkEvaluate : to Evaluate the accurate or other coefficient of the model
         must override the preprocess_testset
     """
-    def __init__(self , args) :
+    def __init__(self , args , nu , ni) :
         super(TopkEvaluate, self).__init__()
         self.args = args
         self.topk = 20 
@@ -15,6 +16,8 @@ class TopkEvaluate(object):
             self.topk = self.args.topk
         print ("[WARN] evaluate topk = %d" % self.topk)
         self.retain = {}
+        self.nu = nu
+        self.ni = ni
 
     def dataset2recmap(self , dataset) : 
         """
@@ -42,19 +45,18 @@ class TopkEvaluate(object):
         """ 
             calculate the accurate of the recsys
             parameter module : the module which have a get_topk method to call
+            parameter train_set : the trainset of the task
             parameter test_set : the test_set of the task
         """
         test = self.preprocess_set(test_set , 'test' , retain)
         train = self.preprocess_set(train_set ,'train' , retain)
-        rec = None
-        if getattr (module , 'get_topk') :  # make top_k rec
-            rec = self.numpy2recmap(module.get_topk())
-        else : 
-            raise RuntimeError("TopkEvaluate must get a module have get_topk method")
-
         #import pdb
         #pdb.set_trace()
+        rec = {}
         recset = {}
+        for ui in range(self.nu) : 
+            rec[ui] = self.modulereclist(module , ui)
+        
         for u,l in rec.items() : 
             tmp = set()
             trainset = set(train[u]) if u in train else set()
@@ -82,3 +84,32 @@ class TopkEvaluate(object):
         recall /= len_call
 
         return prec , recall
+
+class Evaluate(TopkEvaluate) :
+    def dataset2recmap(self , dataset) : 
+        '''
+            dataset is [ items,items,... ]
+        '''
+        inte = dataset
+        gath = gather_2dim_list(inte , 0)
+        for k,v in gath.items() : 
+            v = [item[1] for item in v]
+            gath[k] = v
+        return gath
+
+    def modulereclist(self , module , uid) : 
+        arr = module([uid]*self.ni , range(self.ni)).detach().numpy()
+        score = [[i , s] for i , s in enumerate(arr.tolist())]
+        score = sorted(score , key=lambda x:x[1] , reverse=True)
+        return [item[0] for item in score]
+
+class EvaluateModifiedMF(Evaluate) :
+
+    def modulereclist(self , module , uid) : 
+        arr = module(self.Z , [uid]*self.ni , range(self.ni)).detach().numpy()
+        score = [[i , s] for i , s in enumerate(arr.tolist())]
+        score = sorted(score , key=lambda x:x[1] , reverse=True)
+        return [item[0] for item in score]
+
+    def set_Z(self , Z) : 
+        self.Z = Z

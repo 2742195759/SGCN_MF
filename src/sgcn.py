@@ -8,7 +8,7 @@ from tqdm import trange
 import torch.nn.init as init
 from torch.nn import Parameter
 import torch.nn.functional as F
-from utils import calculate_auc, setup_features
+from utils import calculate_auc
 from sklearn.model_selection import train_test_split
 from signedsageconvolution import SignedSAGEConvolutionBase, SignedSAGEConvolutionDeep, ListModule
 from collections import OrderedDict
@@ -31,6 +31,9 @@ class SignedGraphConvolutionalNetwork(torch.nn.Module):
     def setup_layers(self):
         """
         Adding Base Layers, Deep Signed GraphSAGE layers and Regression Parameters if the model is not a single layer model.
+
+
+        visualize the parameter of every layer , and no problem.
         """
         self.nodes = range(self.X.shape[0])
         self.neurons = self.args.layers
@@ -44,8 +47,6 @@ class SignedGraphConvolutionalNetwork(torch.nn.Module):
             self.negative_aggregators.append(SignedSAGEConvolutionDeep(3*self.neurons[i-1], self.neurons[i]).to(self.device))
         self.positive_aggregators = ListModule(*self.positive_aggregators)
         self.negative_aggregators = ListModule(*self.negative_aggregators)
-        #import pdb
-        #pdb.set_trace()
         deeplayer = OrderedDict()
         assert(isinstance(self.args.deep_neurons , list))
         assert(self.args.deep_neurons[-1] == 1)
@@ -69,11 +70,10 @@ class SignedGraphConvolutionalNetwork(torch.nn.Module):
         label = hyper_edge[:,-1].type(torch.float)
         label[label<0] = 0
         deep_input = torch.cat((z[hyper_edge[:,0].type(torch.long),:] , z[hyper_edge[:,1].type(torch.long),:] , z[hyper_edge[:,2].type(torch.long),:]) , dim=-1)
-        posi = torch.squeeze(self.deep(deep_input) / 2 + 0.5) # make it between [0,1]
+        posi = torch.squeeze(self.deep(deep_input) / 2 + 0.5) # make it between [0,1] XXX ASK
 
         loss = torch.log(posi * label + (1-posi)*(1-label))
-        loss = -loss.mean()
-
+        loss = -loss.sum()
         return loss
 
 
@@ -94,7 +94,9 @@ class SignedGraphConvolutionalNetwork(torch.nn.Module):
         self.h_pos.append(torch.tanh(self.positive_base_aggregator(self.X, positive_edges , pos_adj)))
         self.h_neg.append(torch.tanh(self.negative_base_aggregator(self.X, negative_edges , neg_adj)))
         for i in range(1,self.layers):
-            self.h_pos.append(torch.tanh(self.positive_aggregators[i-1](self.h_pos[i-1],self.h_neg[i-1], positive_edges, negative_edges , pos_adj , neg_adj)))
-            self.h_neg.append(torch.tanh(self.negative_aggregators[i-1](self.h_neg[i-1],self.h_pos[i-1], positive_edges, negative_edges , pos_adj , neg_adj)))
+            t_pos = torch.tanh(self.positive_aggregators[i-1](self.h_pos[i-1],self.h_neg[i-1], positive_edges, negative_edges , pos_adj , neg_adj))
+            t_neg = torch.tanh(self.negative_aggregators[i-1](self.h_neg[i-1],self.h_pos[i-1], positive_edges, negative_edges , pos_adj , neg_adj))
+            self.h_pos.append(t_pos)
+            self.h_neg.append(t_neg)
         self.z = torch.cat((self.h_pos[-1], self.h_neg[-1]), 1)
         return self.z

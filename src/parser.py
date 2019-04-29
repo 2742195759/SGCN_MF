@@ -23,7 +23,7 @@ def parameter_parser():
     parser.add_argument("--topk",
                         type = int,
                         nargs = "?",
-                        default = "30",
+                        default = "10",
 	                help = "topk to recommendation")
 
     parser.add_argument("--embedding-path",
@@ -43,7 +43,7 @@ def parameter_parser():
 
     parser.add_argument("--epochs",
                         type = int,
-                        default = 100,
+                        default = 8000,
 	                help = "Number of training epochs. Default is 100.")
 
     parser.add_argument("--reduction-iterations",
@@ -61,6 +61,11 @@ def parameter_parser():
                         default = 42,
 	                help = "Random seed for sklearn pre-training. Default is 42.")
 
+    parser.add_argument("--sgcn_mf_batchsize",
+                        type = int,
+                        default = 1024,
+	                help = "batch size for the sgcn_mf model")
+
     parser.add_argument("--lamb",
                         type = float,
                         default = 1.0,
@@ -73,7 +78,7 @@ def parameter_parser():
 
     parser.add_argument("--learning-rate",
                         type = float,
-                        default = 0.1,
+                        default = 0.001,
 	                help = "Learning rate. Default is 0.01.")
 
     parser.add_argument("--ydivx",
@@ -83,13 +88,14 @@ def parameter_parser():
 
     parser.add_argument("--weight-decay",
                         type = float,
-                        default = 10**-5,
-	                help = "Learning rate. Default is 10^-5.")
+                        default = 10**-2,
+	                help = "weight decay . Default is 10^-2.")
 
-    parser.add_argument("--super-mu",
+    parser.add_argument("--super_mu",
                         type = float,
-                        default = 0.5,
+                        default = 0.01,
 	                help = "the merge super parameter of sgcn.loss + second.loss")
+
 
     parser.add_argument("--model",
                         type = str,
@@ -117,14 +123,27 @@ def parameter_parser():
     parser.add_argument("--mf_lfmdim",
                         type = int,
                         nargs = "?",
-                        default = "50",
+                        default = "200",
 	                help = "the latent dim of MF model")
 
     parser.add_argument("--mf_learnrate",
                         type = float,
                         nargs = "?",
-                        default = "0.005",
+                        default = "0.01",
 	                help = "learning rate of the ml model")
+
+    parser.add_argument("--mf_batchsize",
+                        type = int,
+                        nargs = "?",
+                        default = "200",
+	                help = "batch of the mf model")
+
+    parser.add_argument("--mf_lambda",
+                        type = float,
+                        nargs = "?",
+                        default = "0.001",
+	                help = "the regular item of the MF model")
+
     parser.set_defaults(layers = [32, 32])
     parser.set_defaults(deep_neurons = [10, 1])
     

@@ -111,6 +111,7 @@ class SignedSAGEConvolutionBase(SignedSAGEConvolution):
         Forward propagation pass with features an indices.
         :param x: Feature matrix.
         :param edge_index: Indices.
+        :The formular of the layer is the : { [ A * H , H ] * W } W.shape = 2 * dimH , dimOut
         """
         out = self._gether_(adj , x)
 
@@ -126,6 +127,8 @@ class SignedSAGEConvolutionBase(SignedSAGEConvolution):
 class SignedSAGEConvolutionDeep(SignedSAGEConvolution):
     """
     Deep Signed SAGE class for multi-layer models.
+    :formular :         
+        [ pos_adj * H_1 , neg_adj * H_2 , H_1] * W   W.shape = 3 * dimInput , dimOut
     """
     def forward(self, x_1, x_2, edge_index_pos, edge_index_neg ,pos_adj , neg_adj):
         """

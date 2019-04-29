@@ -6,6 +6,34 @@ from sklearn.metrics import roc_auc_score, f1_score
 from sklearn.decomposition import TruncatedSVD
 from sklearn import preprocessing
 
+class Hasher(object) : 
+    def __init__(self , li=None) : 
+        self.tr = {}
+        self.inv = {}
+        if li != None : 
+            self.feed(li)
+
+    def feed(self , li) : 
+        cnt = 0
+        for name in li : 
+            if name not in self.tr : 
+                self.tr[name] = cnt 
+                self.inv[cnt] = name
+                cnt += 1
+
+    def tran(self , name) : 
+        return self.tr[name]
+
+    def invt(self , idx) : 
+        return self.inv[idx]
+
+    def testcase() : 
+        h = Hasher(['name' , 'xk' , 'wt' , 'xk'])
+        assert(h.tran('xk') == 1)
+        assert(h.tran('name') == 0)
+        assert(h.tran('wt') == 2)
+        assert(h.invt(2)=='wt')
+
 def unique_2dim_list(li , idxs) : 
     s = set()
     res = []
@@ -63,29 +91,30 @@ def split_by_user_time (args , dataset , userid , timeidx) :
     for li in tmp.values() : 
         sor = sorted(li , key=lambda x : x[timeidx])
         numtest = int(len(sor)*test_train_ratio)
-        numtest = numtest if numtest != 0 else 1
-        numtrain = len(sor) - numtrain
+        #numtest = numtest if numtest != 0 else 1
+        numtrain = len(sor) - numtest
         train.extend(sor[0:numtrain])
         test.extend(sor[numtrain:])
+    print (len(train) , len(test))
     return train , test
 
 def read_dataset_split_bytime(args):
     dataset = pd.read_csv(args.data_path , sep='\t' , header=None).values.tolist()
     ## change name to id
-    enc_user = preprocessing.LabelEncoder()
-    enc_item = preprocessing.LabelEncoder()
-    enc_feature = preprocessing.LabelEncoder()
-    enc_user.fit([edge[0] for edge in dataset])
-    enc_item.fit([edge[1] for edge in dataset])
+    enc_user = Hasher()
+    enc_item = Hasher()
+    enc_feature = Hasher()
+    enc_user.feed([edge[0] for edge in dataset])
+    enc_item.feed([edge[1] for edge in dataset])
     feature_labels = []
     for features in [edge[3] for edge in dataset] : 
         for fs in features.split(':') : 
             feature_labels.append(fs.split('|')[0])
-    enc_feature.fit(feature_labels)
+    enc_feature.feed(feature_labels)
     encoder = {}
-    encoder['nu'] = len(enc_user.classes_)
-    encoder['ni'] = len(enc_item.classes_)
-    encoder['nf'] = len(enc_feature.classes_)
+    encoder['nu'] = len(enc_user.tr)
+    encoder['ni'] = len(enc_item.tr)
+    encoder['nf'] = len(enc_feature.tr)
     encoder['enc_user'] = enc_user
     encoder['enc_item'] = enc_item
     encoder['enc_feature'] = enc_feature
@@ -113,11 +142,16 @@ def build_graph(args , dataset) :
             ff = features.split('|')
             hyper_edge.append([line[0] , line[1] , ff[0] , ff[2] , line[2]])
 
-    hyper_edge = [[enc_user.transform([edge[0]])[0] , enc_item.transform([edge[1]])[0] , enc_feature.transform([edge[2]])[0] , int(edge[3]) , int(edge[4])] for edge in hyper_edge]
+    
+
+    print("Collected hyper_edge" , len(hyper_edge))
+    hyper_edge = [[enc_user.tran(edge[0]), enc_item.tran(edge[1]) , enc_feature.tran(edge[2]) , int(edge[3]) , int(edge[4])] for edge in hyper_edge]
+    print("End Build Graph")
     interaction = [[int(edge[0]) , int(edge[1]) , int(edge[4])] for edge in unique_2dim_list(hyper_edge , [0,1])]
+    print("End Build Graph")
         
     pos , neg = build_edge_from_hypergraph(args , hyper_edge)
-
+    print("End Build Graph")
     hyper_edge = [ [edge[0] , edge[1]+nu , edge[2]+nu+ni , edge[3]] for edge in hyper_edge ]  
 
     graph["positive_edges"] = pos
@@ -126,6 +160,8 @@ def build_graph(args , dataset) :
     graph["ncount"] = encoder['nu']+encoder['ni']+encoder['nf']
     graph["interaction"] = interaction # userid , itemid , rating  [seperate_id]
     graph["hyper_edge"] = hyper_edge   # userid , itemid , featureid , +/-1 [gather_id]
+
+    print("End Build Graph")
 
     return graph 
 
@@ -172,37 +208,11 @@ def save_logs(args, logs):
     with open(args.log_path,"w") as f:
             json.dump(logs,f)
 
-def setup_features(args, positive_edges, negative_edges, node_count):
-    """
-    Setting up the node features as a numpy array.
-    :param args: Arguments object.
-    :param positive_edges: Positive edges list.
-    :param negative_edges: Negative edges list.
-    :param node_count: Number of nodes.
-    :return X: Node features.
-    """
-    if args.spectral_features:
-        X = create_spectral_features(args, positive_edges, negative_edges, node_count)
-    else:
-        X = create_general_features(args)
-    return X
-
-def create_general_features(args):
-    """
-    Reading features using the path.
-    :param args: Arguments object.
-    :return X: Node features.
-    """
-    X = np.array(pd.read_csv(args.features_path))
-    return X
-
-def create_spectral_features(args, positive_edges, negative_edges, node_count):
-    """
-    Creating spectral node features using the train dataset edges.
-    :param args: Arguments object.
-    :param positive_edges: Positive edges list.
-    :param negative_edges: Negative edges list.
-    :param node_count: Number of nodes.
-    :return X: Node features.
-    """
-    pass
+def movie_len2formated_data(inpath , outpath) : 
+    f = open(inpath , 'r')
+    out = open(outpath , 'w')
+    for line in f.readlines() : 
+        sl = line.split('::')
+        out.write(sl[0]+'\t'+sl[1]+'\t'+sl[2]+'\t'+'look|good|+1\t'+sl[3])
+    f.close()
+    out.close()
