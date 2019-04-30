@@ -13,3 +13,16 @@ IMPROVE :
         change the default parameter and then go on . 
 
     2. how to record the have-done job and catch exception
+
+
+
+./sub_default_parameter.awk : 
+    输入一个parser文件，必须满足两个条件:
+        1. `parser.add_argument("--PARANAME" ,` 行作为一个参数的开始
+            紧接着下面某一行具有`default = "VAL" , `
+
+        2. 设置结束之后，默认就应该被更改，不要set
+
+    awk执行之后返回-1表示失败，否则成功，如果成功则output就是更改之后的文本
+
+

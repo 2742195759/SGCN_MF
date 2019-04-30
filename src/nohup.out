@@ -1,0 +1,362 @@
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.18 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.182/1.182/1.182/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.21 ms
+INFO: loading config from /etc/shadowsocks/tsinghua.json
+2019-04-30 14:15:10 INFO     loading libcrypto from libcrypto.so.1.1
+2019-04-30 14:15:10 INFO     starting server at 166.111.82.43:8488
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.25 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600098ms
+rtt min/avg/max/mdev = 1.213/1.233/1.254/0.040 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.24 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.249/1.249/1.249/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.22 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.34 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600097ms
+rtt min/avg/max/mdev = 1.220/1.282/1.344/0.062 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.21 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.219/1.219/1.219/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.22 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.25 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600098ms
+rtt min/avg/max/mdev = 1.223/1.236/1.250/0.037 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.28 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.285/1.285/1.285/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.25 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.30 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600100ms
+rtt min/avg/max/mdev = 1.253/1.281/1.309/0.028 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.30 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.301/1.301/1.301/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.32 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.31 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600099ms
+rtt min/avg/max/mdev = 1.310/1.317/1.325/0.037 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.21 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.217/1.217/1.217/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.29 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.36 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600097ms
+rtt min/avg/max/mdev = 1.295/1.331/1.368/0.051 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.25 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.255/1.255/1.255/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.16 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.34 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600099ms
+rtt min/avg/max/mdev = 1.169/1.255/1.341/0.086 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.31 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.318/1.318/1.318/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.34 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.35 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600098ms
+rtt min/avg/max/mdev = 1.345/1.352/1.359/0.007 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.21 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.218/1.218/1.218/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.26 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.26 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600029ms
+rtt min/avg/max/mdev = 1.260/1.260/1.261/0.035 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.28 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.282/1.282/1.282/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.30 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.38 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600038ms
+rtt min/avg/max/mdev = 1.304/1.342/1.380/0.038 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.32 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.328/1.328/1.328/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.35 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.30 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600093ms
+rtt min/avg/max/mdev = 1.304/1.329/1.355/0.044 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.23 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.234/1.234/1.234/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.23 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.21 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600097ms
+rtt min/avg/max/mdev = 1.217/1.225/1.233/0.008 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.20 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.203/1.203/1.203/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.19 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.26 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600100ms
+rtt min/avg/max/mdev = 1.199/1.232/1.266/0.048 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.56 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.569/1.569/1.569/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.28 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.29 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600097ms
+rtt min/avg/max/mdev = 1.285/1.289/1.293/0.004 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.24 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.247/1.247/1.247/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.26 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.21 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600098ms
+rtt min/avg/max/mdev = 1.212/1.240/1.268/0.028 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.35 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.352/1.352/1.352/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.21 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.27 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600098ms
+rtt min/avg/max/mdev = 1.218/1.244/1.271/0.044 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.18 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.185/1.185/1.185/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.32 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.33 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600098ms
+rtt min/avg/max/mdev = 1.324/1.328/1.333/0.036 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.21 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.211/1.211/1.211/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.30 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.32 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600040ms
+rtt min/avg/max/mdev = 1.303/1.314/1.325/0.011 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.30 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.304/1.304/1.304/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.30 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.31 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600098ms
+rtt min/avg/max/mdev = 1.304/1.308/1.312/0.004 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.36 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.366/1.366/1.366/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.29 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.29 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600100ms
+rtt min/avg/max/mdev = 1.297/1.297/1.298/0.036 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.34 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.343/1.343/1.343/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.49 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.29 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600100ms
+rtt min/avg/max/mdev = 1.297/1.394/1.491/0.097 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.19 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.196/1.196/1.196/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.19 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.22 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600097ms
+rtt min/avg/max/mdev = 1.190/1.209/1.229/0.039 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.26 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.266/1.266/1.266/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.20 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.26 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600097ms
+rtt min/avg/max/mdev = 1.202/1.232/1.263/0.046 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.32 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.321/1.321/1.321/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.25 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.30 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600098ms
+rtt min/avg/max/mdev = 1.255/1.281/1.307/0.026 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.26 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.260/1.260/1.260/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.28 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.35 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600038ms
+rtt min/avg/max/mdev = 1.288/1.321/1.354/0.033 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.19 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.193/1.193/1.193/0.000 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.18 ms
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=2 ttl=53 time=1.21 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600100ms
+rtt min/avg/max/mdev = 1.184/1.197/1.211/0.037 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.27 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.271/1.271/1.271/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.26 ms
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=2 ttl=53 time=1.26 ms
+
+--- www.a.shifen.com ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 600097ms
+rtt min/avg/max/mdev = 1.262/1.264/1.267/0.035 ms
+PING www.a.shifen.com (119.75.217.109) 56(84) bytes of data.
+64 bytes from 119.75.217.109 (119.75.217.109): icmp_seq=1 ttl=53 time=1.20 ms
+
+--- www.a.shifen.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.201/1.201/1.201/0.000 ms
+PING www.a.shifen.com (119.75.217.26) 56(84) bytes of data.
+64 bytes from 119.75.217.26 (119.75.217.26): icmp_seq=1 ttl=53 time=1.30 ms

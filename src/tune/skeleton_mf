@@ -1,1 +1,1 @@
-python main.py --model=mf
+python main.py --model=mf --epochs=2

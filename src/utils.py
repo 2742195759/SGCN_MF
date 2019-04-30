@@ -37,7 +37,7 @@ class XKLOG(object) :
     
     def LOG(self , *message) : 
         if message == None or len(message) == 0 : return
-        print (*message)
+        print ('[XKLOG]' , *message)
         self.output.append(message)
 
     def get_filename(self) : 
