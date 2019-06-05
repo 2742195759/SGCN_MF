@@ -128,7 +128,7 @@ def parameter_parser():
     parser.add_argument("--mf_lfmdim",
                         type = int,
                         nargs = "?",
-                        default = "200",
+                        default = "130",
 	                help = "the latent dim of MF model")
 
     parser.add_argument("--mf_learnrate",

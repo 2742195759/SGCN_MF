@@ -1,10 +1,7 @@
 BEGIN {
     start=0
     found_line=0
-    
     template = sprintf("parser\\.add_argument\\(\\\"\\-\\-%s\\\"," , key)
-    print template
-    print key , val
 }
 
 $0 ~ template{
@@ -13,7 +10,7 @@ $0 ~ template{
 
 $0 ~ /default ?= ?.*,/{
     if ( start == 1 ) {
-        gsub("default *= *.*," , sprintf("default = \"%s\"" , val))
+        gsub("default *= *.*," , sprintf("default = \"%s\"," , val))
         start = 0
     }
 }

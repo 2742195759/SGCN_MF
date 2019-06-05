@@ -1,10 +1,12 @@
 import json
 import numpy as np
+import torch
 import pandas as pd
 import networkx as nx
 from sklearn.metrics import roc_auc_score, f1_score
 from sklearn.decomposition import TruncatedSVD
 from sklearn import preprocessing
+from scipy import sparse
 import time
 
 
@@ -65,6 +67,18 @@ class XKLOG(object) :
         print (log.get_filename())
         log.write()
 
+class space (object) : 
+    """simple test the namespace of the python
+    """
+
+    def __init__ (self) : 
+        self.namespace = {}
+
+    def __setitem__(self , key , value) : 
+        self.namespace[key] = value
+
+    def __getitem__(self , key) : 
+        return self.namespace[key]
 
 class Hasher(object) : 
     def __init__(self , li=None) : 
@@ -131,11 +145,11 @@ def build_edge_from_hypergraph(args , hyper_edge) :
     for edge in hyper_edge : 
         if edge[3] == 1 : 
             pos.append([edge[0] , nu + edge[1]])
-            pos.append([edge[0] , nu+ni+edge[2]])
+            #pos.append([edge[0] , nu+ni+edge[2]])
             pos.append([nu+edge[1] , nu+ni+edge[2]])
         elif edge[3] == -1 : 
             neg.append([edge[0] , nu + edge[1]])
-            neg.append([edge[0] , nu+ni+edge[2]])
+            #neg.append([edge[0] , nu+ni+edge[2]])
             neg.append([nu+edge[1] , nu+ni+edge[2]])
     return pos , neg
 
@@ -277,6 +291,17 @@ def movie_len2formated_data(inpath , outpath) :
     f.close()
     out.close()
 
+def scipy_coo2torch_coo(sparse_matrix)  : 
+    s = sparse_matrix.tocoo()
+    return  torch.sparse.FloatTensor( torch.LongTensor(np.mat([s.row , s.col])) , torch.Tensor(s.data) , s.shape )
+
 
 if __name__ == '__main__' : 
     XKLOG.testcase()
+    s = sparse.dok_matrix((4,4))
+    s[0,1] = 12  
+    s[2,3] = 10  
+    tmp = scipy_coo2torch_coo(s)
+    assert(tmp.to_dense()[0,1].item() == 12)
+    assert(tmp.to_dense()[2,3].item() == 10)
+    print ('Success')

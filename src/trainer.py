@@ -4,6 +4,7 @@ from tqdm import trange
 from utils import tab_printer, read_dataset_split_bytime, score_printer, save_logs , build_graph
 from evaluate import Evaluate
 import torch
+import numpy as np
 
 
 class Trainer (object) : 
@@ -15,6 +16,7 @@ class Trainer (object) :
         property : 
             rawtrainset , rawtestset : the set passed by main
             trainset , testset       : the preprocessed set
+            batchsize                : must provided , use to calculate the step number
         
         function : 
             preprocessing : the function that called every epoch
@@ -25,7 +27,7 @@ class Trainer (object) :
         assert('log' in self.args)
 
 
-########################################Train Method
+########################################Train Method, Important method in the framework
     def train(self) : 
         epochs = trange(self.args.epochs, desc="Loss")
         optimizer = self.getoptimizer()
@@ -39,6 +41,10 @@ class Trainer (object) :
                 loss.backward()
                 optimizer.step()
                 tot_loss += loss.item()
+            if (np.isnan(tot_loss) or np.isinf(tot_loss)): # if loss is nan, we can stop early
+                tuples = self.score(self.rawtrainset , self.rawtestset)
+                self.args.log.LOG (tuples[0] , tuples[1] , tuples[2])
+                break 
             epochs.set_description("SGCN (Loss=%g)" % round(tot_loss,4))
             if self.args.test_size >0 :
                 tuples = self.score(self.rawtrainset , self.rawtestset)
@@ -63,7 +69,7 @@ class Trainer (object) :
         st = self.cntstep * self.batchsize
         ed = min(st + self.batchsize , len(self.trainset))
         self.cntstep = self.cntstep + 1
-        res = self.getloss(st , ed) 
+        res = self.getloss(st , ed)
         return res
 
 #################################For Modify
@@ -73,14 +79,14 @@ class Trainer (object) :
     def getloss(self , st , ed) : 
         return self.model.getloss(torch.LongTensor(self.trainset[st:ed]))
 
-    def pre_epoch(self , trainset) : 
+    def pre_epoch(self , rawtrainset) : 
         '''
         preprocessing the trainset and then return the trainset after process
         side effect : must add a self.trainset in the self
         return numstep 
         '''
         self.sample = NegativeSample3(self.nu , self.ni , 1)
-        self.trainset = self.sample.sample(trainset)
+        self.trainset = self.sample.sample(rawtrainset)
         return None
 
     def getoptimizer(self) : 

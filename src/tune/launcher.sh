@@ -6,6 +6,8 @@ then
     exit -1
 fi
 
+echo "=================================================="     >>  ./log/tune_log
+
 skeleton=`cat $1`
 tasks=`cat $2`
 parameter_default_file=$3
@@ -21,6 +23,9 @@ do
     optimal_val=0
     for run in $task 
     do
+        echo "===============================================\n" 
+        echo < $parameter_default_file
+        echo "===============================================\n"
         if (( $cnt == 1 )) 
         then 
             parameter_name=$run
@@ -45,6 +50,6 @@ do
     echo ""  >>  ./log/tune_log
 
     ## change the default parameter
-    newfile=$(awk -f ./tune/sub_default_parameter.awk $parameter_default_file -v key=$parameter_name -v val=$optimal_val)
+    newfile=$(awk -f ./tune/sub_default_parameter.awk -v key=$parameter_name -v val=$optimal_val $parameter_default_file)
     echo "$newfile" > $parameter_default_file
 done 
