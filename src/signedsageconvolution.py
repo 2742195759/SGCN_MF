@@ -13,6 +13,7 @@ def uniform(size, tensor):
     stdv = 1.0 / math.sqrt(size)
     if tensor is not None:
         tensor.data.uniform_(-stdv, stdv)
+        #pdb.set_trace()
 
 class ListModule(torch.nn.Module):
     """
@@ -93,14 +94,11 @@ class SignedSAGEConvolution(torch.nn.Module):
         return "{}({}, {})".format(self.__class__.__name__, self.in_channels, self.out_channels)
 
     def _gether_(self , adj , H , norm=True) :
-        #import pdb
-        #pdb.set_trace()
-        if norm : 
-            degree = adj.sum(dim=1 , keepdim=True)
-            degree[degree==0] = 1
-            return torch.matmul(adj , H) / degree
-        else : 
-            return torch.matmul(adj , H)
+        ''' The matrix calculate of the GCN method
+            
+            adj must be the (1/N)*(A-E)*(1/N)矩阵,提前计算，稀疏矩阵类型
+        '''
+        return torch.sparse.mm(adj , H)
 
 class SignedSAGEConvolutionBase(SignedSAGEConvolution):
     """
@@ -113,7 +111,7 @@ class SignedSAGEConvolutionBase(SignedSAGEConvolution):
         :param edge_index: Indices.
         :The formular of the layer is the : { [ A * H , H ] * W } W.shape = 2 * dimH , dimOut
         """
-        out = self._gether_(adj , x)
+        out = self._gether_(adj, x)
 
         out = torch.cat((out,x),1)
         out = torch.matmul(out, self.weight)
@@ -150,3 +148,27 @@ class SignedSAGEConvolutionDeep(SignedSAGEConvolution):
             out = F.normalize(out, p=2, dim=-1)
 
         return out
+
+class ItemActivate(torch.nn.Module):
+    ''' the class for the Item aggregation, contain a lot of interface
+    '''
+
+    def __init__(self,
+                 in_channels,
+                 out_channels):
+        super(ItemActivate, self).__init__()
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.weight_iu = Parameter(torch.Tensor(self.in_channels, self.out_channels))
+        self.weight_if = Parameter(torch.Tensor(self.in_channels, self.out_channels))
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        """
+        Initialize parameters.
+        """
+        init.xavier_normal_(self.weight_if)
+        init.xavier_normal_(self.weight_iu)
+
+    def forward(self, if_emb, iu_emb):
+        return torch.tanh(torch.matmul(if_emb, self.weight_if) + torch.matmul(iu_emb, self.weight_iu))

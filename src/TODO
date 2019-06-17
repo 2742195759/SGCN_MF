@@ -1,2 +1,24 @@
-1. Evaluate 还有一点东西需要处理
-2. 添加新的Evaluate函数，同时观察输出结果。
+1. Evaluate 还有一点东西需要处理     (??)
+
+2. 添加新的Evaluate函数，同时观察输出结果。 (Start do it)
+
+3. BASE_LINE调试                     (OK)
+    create X, Y
+    log_location change 
+
+4. random sed 确保每次结果都完全相同 (OK) 
+    
+    the main ideal is the set the seed for every random we used : torch.manual_seed(seed) ; numpy.random.seed(seed) ; random.seed(seed) ; 
+    NOTE : SET IT AT THE MAIN FUNCTION IS THE BEST QUICKLY WAY .
+
+5. 确保negative sample不进行调整.
+
+6. baseline代码应该是出现了inf或者是nan问题,调好他们. (lrrmp OK , efm UNK)
+
+7. there is problem at edge singed decision. Fix them and split the graph into two subgraph such u-i and i-f
+
+8. Change the GCN module using the new GCN method, subgraph method. (OK)
+
+9. Use the new init method and test the new function
+
+10. add the NDCG and see the what NDCG is

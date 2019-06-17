@@ -11,6 +11,12 @@ class Sample (object) :
 
 class NegativeSample3(Sample) : 
     def sample(self , trainset) : 
+        """
+            make the choice became triple 
+            don't change the len of the trainset ; only append 
+            
+            @parameter : trainset = [ [uid , iid , ...] ...]  , the uid , iid is considered as pos sample
+        """
         allitem = set(range(self.num_item))
         tmp = gather_2dim_list(trainset , 0)
         data = []
@@ -22,5 +28,4 @@ class NegativeSample3(Sample) :
             for ipos in pos_item : 
                 data.extend ([[k , ipos , random.choice(list(unknow_item))] for ttt in range(self.neg2posratio)])  # 可能有问题，但是问题不大
 
-        print (len(data))
         return data

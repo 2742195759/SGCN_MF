@@ -66,6 +66,8 @@ class Modified_MF(torch.nn.Module):
         """
         super(Modified_MF, self).__init__()
         self.args = args
+        print( "dim Y: ", self.args.dimEmbedding*self.args.ydivx )
+        print( "dim Z: ", self.args.dimEmbedding)
         self.uY = Parameter(torch.Tensor(nu, int(self.args.ydivx * self.args.dimEmbedding)))
         self.iY = Parameter(torch.Tensor(ni, int(self.args.ydivx * self.args.dimEmbedding)))
         self.neg2posratio = 1
@@ -78,7 +80,9 @@ class Modified_MF(torch.nn.Module):
         """
         Model Modified_MF , 
         :param Tu , the Tensorable of userid [ [ userid ] ...]
-        :param Ti , the Tensorable of userid [ [ itemid ] ...]
+        :param Ti , the Tensorable of userid [ [ itemid ] ...] 
+        NOTE :
+            the index of Tu , Ti is from 0 respectly
         """
         if not isinstance(Tu , torch.LongTensor) : 
             Tu = torch.LongTensor(Tu)
