@@ -1,6 +1,7 @@
 log
 nohub.out
 formated_data
-EFM
+EFM/
 *.pyc
+movie_len.*
 formated_data
