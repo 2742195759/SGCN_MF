@@ -107,7 +107,7 @@ class Evaluate(TopkEvaluate) :
 class EvaluateModifiedMF(Evaluate) :
 
     def modulereclist(self , module , uid) : 
-        arr = module(self.Z , [uid]*self.ni , range(self.ni)).detach().numpy()
+        arr = module(self.Z , [uid]*self.ni , range(self.ni)).cpu().detach().numpy()
         score = [[i , s] for i , s in enumerate(arr.tolist())]
         score = sorted(score , key=lambda x:x[1] , reverse=True)
         return [item[0] for item in score]

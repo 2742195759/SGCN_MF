@@ -58,7 +58,7 @@ class SGCN_MF(Trainer):
         self.sgcn = SignedGraphConvolutionalNetwork(self.device, self.args, self.X, self.nu, self.ni).to(self.device)
         self.sgcn.train()
         print ('modified')
-        self.mod_mf = Modified_MF(self.args , self.nu , self.ni)
+        self.mod_mf = Modified_MF(self.args , self.nu , self.ni).to(self.device)
         self.mod_mf.train()
 
     def getoptimizer(self) : 
@@ -82,7 +82,7 @@ class SGCN_MF(Trainer):
 
     def getregulazationloss(self) : 
         ps = self.getparameter()
-        loss = torch.Tensor([0]).squeeze()
+        loss = torch.Tensor([0]).squeeze().to(self.device)
         for p in ps : 
             loss = loss + (p**2).sum()
         return loss
@@ -96,9 +96,8 @@ class SGCN_MF(Trainer):
         #loss1 = self.sgcn.calculate_loss_function(self.Z , torch.LongTensor(self.hyper_edge[st:ed]))
         loss1 = self.sgcn.calculate_loss_xk_func(self.Z , torch.LongTensor(self.hyper_edge[st:ed]))
         loss2 = self.mod_mf.getloss(self.Z , torch.LongTensor(sample.sample(self.interaction[st:ed])))
-        print (loss1, loss2)
-
-        #print (loss1*mu , loss2 , self.getregulazationloss() * reg_mu)
+        #print (loss1, loss2)
+        print (loss1*mu , loss2 , self.getregulazationloss() * reg_mu)
 
         loss = loss1*mu + loss2 + self.getregulazationloss() * reg_mu
         return loss
@@ -171,8 +170,8 @@ class SGCN_MF(Trainer):
 
         self.pos_adj = [None , None]
         self.neg_adj = [None , None]
-        self.neg_adj[0], self.neg_adj[1] = scipy_coo2torch_coo(iu_neg_adj), scipy_coo2torch_coo(if_neg_adj)
-        self.pos_adj[0], self.pos_adj[1] = scipy_coo2torch_coo(iu_pos_adj), scipy_coo2torch_coo(if_pos_adj)
+        self.neg_adj[0], self.neg_adj[1] = scipy_coo2torch_coo(iu_neg_adj).to(self.device), scipy_coo2torch_coo(if_neg_adj).to(self.device)
+        self.pos_adj[0], self.pos_adj[1] = scipy_coo2torch_coo(iu_pos_adj).to(self.device), scipy_coo2torch_coo(if_pos_adj).to(self.device)
 
         self.positive_edges = torch.from_numpy(np.array(self.positive_edges, dtype=np.int64).T).type(torch.long).to(self.device)
         self.negative_edges = torch.from_numpy(np.array(self.negative_edges, dtype=np.int64).T).type(torch.long).to(self.device)

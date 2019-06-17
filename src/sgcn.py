@@ -46,12 +46,12 @@ class SignedGraphConvolutionalNetwork(torch.nn.Module):
         self.positive_aggregators = [[],[]] # 0 -- iu , 1 -- if
         self.negative_aggregators = [[],[]] # 0 -- iu , 1 -- if
         self.item_activaters = []           # item activate
-        self.item_activaters.append(ItemActivate(self.neurons[0], self.neurons[0]))
+        self.item_activaters.append(ItemActivate(self.neurons[0], self.neurons[0]).to(self.device))
         for i in range(1,self.layers):
             for j in range(0,2):
                 self.positive_aggregators[j].append(SignedSAGEConvolutionDeep(3*self.neurons[i-1], self.neurons[i]).to(self.device))
                 self.negative_aggregators[j].append(SignedSAGEConvolutionDeep(3*self.neurons[i-1], self.neurons[i]).to(self.device))
-            self.item_activaters.append(ItemActivate(self.neurons[i], self.neurons[i]))
+            self.item_activaters.append(ItemActivate(self.neurons[i], self.neurons[i]).to(self.device))
 
         for j in range(0,2):
             self.positive_aggregators[j] = ListModule(*self.positive_aggregators[j])
@@ -67,8 +67,8 @@ class SignedGraphConvolutionalNetwork(torch.nn.Module):
             linear = torch.nn.Linear(self.args.deep_neurons[i-1] , self.args.deep_neurons[i]).to(self.device)
             init.xavier_normal_(linear.weight)
             deeplayer[str(i)] = linear 
-            deeplayer[str(i)+'tanh'] = torch.nn.Tanh()
-        self.deep = torch.nn.Sequential(deeplayer)
+            deeplayer[str(i)+'tanh'] = torch.nn.Tanh().to(self.device)
+        self.deep = torch.nn.Sequential(deeplayer).to(self.device)
             
     def calculate_loss_xk_func (self, z, hyper_edge):
         """ calculate the loss by xk version
@@ -77,11 +77,11 @@ class SignedGraphConvolutionalNetwork(torch.nn.Module):
             predict the edge type. the more similarity, the more like and then the edge will be a 
             positive edge, vice versa
         """ 
-        label = hyper_edge[:,-1].type(torch.float)  #XXX label may be too small?
+        label = hyper_edge[:,-1].type(torch.float).to(self.device)  #XXX label may be too small?
         label[label<0] = 0
         user_vec = z[hyper_edge[:,0].type(torch.long),:]
         item_vec = z[hyper_edge[:,1].type(torch.long),:]
-        posi = torch.sigmoid(torch.sum(user_vec * item_vec, dim=1))
+        posi = torch.sigmoid(torch.sum(user_vec * item_vec, dim=1)).to(self.device)
         #posi = torch.squeeze(self.deep(deep_input) / 2 + 0.5) # make it between [0,1] XXX ASK
 
         loss = torch.log(posi * label + (1-posi)*(1-label))
@@ -165,7 +165,11 @@ class SignedGraphConvolutionalNetwork(torch.nn.Module):
         self.z = torch.cat([
             self._get_final_embedding(self.h_pos[0][-1], self.h_pos[1][-1]), 
             self._get_final_embedding(self.h_neg[0][-1], self.h_neg[1][-1])
+<<<<<<< HEAD
             ], 1)
+=======
+            ], 1).to(self.device)
+>>>>>>> 86761afd00eb71bb5661b752de8986241569a850
 
         assert(self.z.shape == (self.X.shape[0], self.neurons[-1]*2)) # only for this testcase
 

@@ -2,4 +2,5 @@ log
 nohub.out
 formated_data
 EFM
-nohup.out
+*.pyc
+formated_data

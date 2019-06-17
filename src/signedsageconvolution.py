@@ -98,6 +98,8 @@ class SignedSAGEConvolution(torch.nn.Module):
             
             adj must be the (1/N)*(A-E)*(1/N)矩阵,提前计算，稀疏矩阵类型
         '''
+        #import pdb
+        #pdb.set_trace()
         return torch.sparse.mm(adj , H)
 
 class SignedSAGEConvolutionBase(SignedSAGEConvolution):

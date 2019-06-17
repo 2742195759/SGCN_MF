@@ -93,7 +93,7 @@ def parameter_parser():
 
     parser.add_argument("--ratio_neg_pos",
                         type = int,
-                        default = "10",
+                        default = "3",
 	                help = "the neg sample number for each pos sample")
 
     parser.add_argument("--weight-decay",
@@ -103,7 +103,7 @@ def parameter_parser():
 
     parser.add_argument("--super_mu",
                         type = float,
-                        default = "0.01",
+                        default = "20",
 	                help = "the merge super parameter of sgcn.loss + second.loss")
 
     parser.add_argument("--model",

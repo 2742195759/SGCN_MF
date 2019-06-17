@@ -56,7 +56,7 @@ class Modified_MF(torch.nn.Module):
     Modified_MF : num of latent factor is (1+self.args.ydivx) * args.dimEmbedding
     """
 
-    def __init__(self , args , nu , ni ) :
+    def __init__(self , args , nu , ni) :
         """
         Init Function : 
         :parameter args 
